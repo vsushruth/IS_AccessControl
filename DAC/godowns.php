@@ -56,14 +56,14 @@
 			$permissions = $mysqli->query($perm_sql);
 			if($permissions)
 			{
-				echo('<form method="post">
+				echo'<form method="post">
 					<label>Location</label>
 					<br>
 					<input type="text" name="loc" required>
 					<br><br>
 					<label>Manager-ID</label>
 					<br>
-					<select name="Mid">'.
+					<select name="Mid">';
 					$sqlSelect="SELECT * FROM employee";
 					$result = $mysqli-> query ($sqlSelect);
 					while ($row = mysqli_fetch_array($result)) {
@@ -71,15 +71,17 @@
 					}
 					foreach ($rows as $row) {
 						print "<option value='" . $row['Employee_ID'] . "'>" .$row['Employee_ID']."(". $row['Employee_Name'] . ")</option>";
-					}.'</select>
+					}
+
+					echo'</select>
 					<br><br>
 					<button type="submit" name="button1">Add</button>
-				</form>');
+				</form>';
 			}
 			else{
 				echo"<center>
                     <h3>You don't have the clearance to Add Godowns</h3>
-                </center"
+                </center>";
 			}
 		?>
 	</div>

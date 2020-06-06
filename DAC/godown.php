@@ -23,7 +23,6 @@ if ($conn->connect_error) {
 
 echo "<h1><center>Items in Godown</center></h1>";
 
-
 $sql = "SELECT * FROM godown_item_details natural join item where Godown_ID = $Gid";
 $result = $conn->query($sql);
 

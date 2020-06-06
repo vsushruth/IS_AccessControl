@@ -22,7 +22,7 @@
     </div>
 
     <div class="col-lg-9 col-md-6 col-sm-6" >
-		<form method="post">
+		<form method="post" id='purchase_putter'>
 			<br>
 			<label><h5>Supplier ID</h5></label>
 			<br>
@@ -67,6 +67,17 @@
 		<?php
 			$mysqli = new mysqli($servername, $username, $password, $dbname);
 			
+			$purchases = (string)$Gid.'purchases';
+			$perm_sql = "SELECT Write_Access FROM Access_Matrix WHERE Employee_ID = $Eid AND Objects_ID=$purchases";
+			$permission = $mysqli->query($perm_sql);
+
+			if($permission == false){
+				echo"
+					<script type='text/javascript'>
+						var form = document.getElementById('purchase_putter');
+						form.style.displaty = none;
+					</script>";
+			}
 
 		?>
 	</div>
