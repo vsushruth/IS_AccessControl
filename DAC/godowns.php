@@ -53,18 +53,17 @@
 			$Eid = $_SESSION['Eid'];
 
 			$perm_sql = "SELECT Write_Access FROM access_matrix WHERE Employee_ID = '$Eid' AND Objects_ID='godowns' ";
-			$permissions = $conn->query($perm_sql);
+			$permissions = $mysqli->query($perm_sql);
 			if($permissions)
 			{
-				echo"<form method="post">
+				echo('<form method="post">
 					<label>Location</label>
 					<br>
 					<input type="text" name="loc" required>
 					<br><br>
 					<label>Manager-ID</label>
 					<br>
-					<select name="Mid">"
-
+					<select name="Mid">'.
 					$sqlSelect="SELECT * FROM employee";
 					$result = $mysqli-> query ($sqlSelect);
 					while ($row = mysqli_fetch_array($result)) {
@@ -72,12 +71,10 @@
 					}
 					foreach ($rows as $row) {
 						print "<option value='" . $row['Employee_ID'] . "'>" .$row['Employee_ID']."(". $row['Employee_Name'] . ")</option>";
-					}
-
-					echo"</select>
+					}.'</select>
 					<br><br>
 					<button type="submit" name="button1">Add</button>
-				</form>"
+				</form>');
 			}
 			else{
 				echo"<center>

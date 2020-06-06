@@ -14,10 +14,6 @@
 
 <!DOCTYPE html>
 <html>
-<head>
-<style>
-</style>
-</head>
 <body>
 
 <div class = "container-fluid row padding" >
@@ -67,6 +63,12 @@
 			<br><br>
 			<button type="submit" name="button1">Add</button>
 		</form>
+
+		<?php
+			$mysqli = new mysqli($servername, $username, $password, $dbname);
+			
+
+		?>
 	</div>
 </div>
 

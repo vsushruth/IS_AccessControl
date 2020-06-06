@@ -20,7 +20,7 @@
 
     echo "<h1><center>All Items</center></h1>";
 
-    $perm_sql = "SELECT Read_Access FROM access_matrix WHERE Employee_ID = $Eid AND Objects_ID='item' "
+    $perm_sql = "SELECT Read_Access FROM access_matrix WHERE Employee_ID = $Eid AND Objects_ID='items' ";
     $permissions = $conn->query($perm_sql);
     if($permissions == true)
     {
@@ -39,7 +39,7 @@
         echo"<center>
             <h3>You don't have access to this information<br></h3>
             <p>Contact the administrator for further information</p>
-        </center>"
+        </center>";
     }
 
     $conn->close();
@@ -56,17 +56,17 @@
             $mysqli = new mysqli($servername, $username, $password, $dbname);
             $Eid = $_SESSION['Eid'];
 
-            $perm_sql = "SELECT Write_Access FROM access_matrix WHERE Employee_ID = $Eid AND Objects_ID='item' ";
-            $permissions = $conn->query($perm_sql);
+            $perm_sql = "SELECT Write_Access FROM access_matrix WHERE Employee_ID = $Eid AND Objects_ID='items' ";
+            $permissions = $mysqli->query($perm_sql);
             if($permissions == false)
             {
 
                 echo"<center>
                     <h3>You don't have the clearance to Add Items</h3>
-                </center"
+                </center><br><hr><br>";
             }
             else{
-                echo"<form method="post" id="item_putter">
+                echo'<form method="post" id="item_putter">
                     <label>Name</label>
                     <br>
                     <input type="text" name="name" required>
@@ -88,7 +88,7 @@
                     >
                     <br><br>
                     <input type="submit" name="button2" value = "Add">
-                </form>"
+                </form>';
             }
         ?>
 
