@@ -71,3 +71,7 @@
 
 			</div>
 		</nav>
+
+<?php
+		@$Eid = $_SESSION['Eid'];
+?>

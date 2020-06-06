@@ -25,7 +25,7 @@
 	?>
 	</h1></center>
 <br>
-<img src = "superExterior.jpg" style = " display: block; margin-left: auto; margin-right: auto; width: 50%;" >
+<img src = "img/superExterior.jpg" style = " display: block; margin-left: auto; margin-right: auto; width: 50%;" >
 
 
 <!-- <a href="summary.php">Summary</a> -->
