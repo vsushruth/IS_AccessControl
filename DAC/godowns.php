@@ -17,16 +17,28 @@
 	// echo $sql;
 	$result = $conn->query($sql);
 
-	if ($result->num_rows > 0) {
-	    echo "<table class = 'table table-hover table-striped'><tr><th>Godown ID</th><th>Godown Location</th><th>Manager Name</th></tr>";
+	//$Gid_String = (string)$Gid;
+	$perm_sql = "SELECT Read_Access FROM Access_Matrix WHERE Employee_ID = $Eid AND Objects_ID='godowns'";
+	$permission = $conn->query($sql);
 
-	    while($row = $result->fetch_assoc()) {
-	        echo "<tr><td>" . $row["Godown_ID"]. "<a href='godown.php?Gid=".$row["Godown_ID"]."'><img src='1.png' style='width:30px; height30px; margin-left:20%;'></a></td><td>" . $row["Godown_Location"]. "</td><td>" . $row["Employee_Name"]. "</td></tr>";
-	    }
-	    echo "</table>";
-	} else {
-	    echo "0 results";
+	if($permission){
+		if ($result->num_rows > 0) {
+			echo "<table class = 'table table-hover table-striped'><tr><th>Godown ID</th><th>Godown Location</th><th>Manager Name</th></tr>";
+	
+			while($row = $result->fetch_assoc()) {
+				echo "<tr><td>" . $row["Godown_ID"]. "<a href='godown.php?Gid=".$row["Godown_ID"]."'><img src='1.png' style='width:30px; height30px; margin-left:20%;'></a></td><td>" . $row["Godown_Location"]. "</td><td>" . $row["Employee_Name"]. "</td></tr>";
+			}
+			echo "</table>";
+		} else {
+			echo "0 results";
+		}
+
+	}else{
+		echo"<center>
+		<h3>You don't have access to this data</h3>
+		</center><br><hr>";
 	}
+	
 	$conn->close();
 ?>
 
@@ -36,31 +48,46 @@
     </div>
 
     <div class="col-lg-8 col-md-6 col-sm-6" >
-		<form method="post">
-			<label>Location</label>
-			<br>
-			<input type="text" name="loc" required>
-			<br><br>
-			<label>Manager-ID</label>
-			<br>
-			<select name="Mid">
-			<?php
-				$mysqli = new mysqli($servername, $username, $password, $dbname);
-				$sqlSelect="SELECT * FROM employee";
-				$result = $mysqli-> query ($sqlSelect);
-				while ($row = mysqli_fetch_array($result)) {
-					$rows[] = $row;
-				}
-				foreach ($rows as $row) {
-					print "<option value='" . $row['Employee_ID'] . "'>" .$row['Employee_ID']."(". $row['Employee_Name'] . ")</option>";
-				}
-			?>
-			</select>
-			<br><br>
-			<button type="submit" name="button1">Add</button>
-		</form>
+		<?php
+			$mysqli = new mysqli($servername, $username, $password, $dbname);
+			$Eid = $_SESSION['Eid'];
+
+			$perm_sql = "SELECT Write_Access FROM access_matrix WHERE Employee_ID = '$Eid' AND Objects_ID='godowns' ";
+			$permissions = $conn->query($perm_sql);
+			if($permissions)
+			{
+				echo"<form method="post">
+					<label>Location</label>
+					<br>
+					<input type="text" name="loc" required>
+					<br><br>
+					<label>Manager-ID</label>
+					<br>
+					<select name="Mid">"
+
+					$sqlSelect="SELECT * FROM employee";
+					$result = $mysqli-> query ($sqlSelect);
+					while ($row = mysqli_fetch_array($result)) {
+						$rows[] = $row;
+					}
+					foreach ($rows as $row) {
+						print "<option value='" . $row['Employee_ID'] . "'>" .$row['Employee_ID']."(". $row['Employee_Name'] . ")</option>";
+					}
+
+					echo"</select>
+					<br><br>
+					<button type="submit" name="button1">Add</button>
+				</form>"
+			}
+			else{
+				echo"<center>
+                    <h3>You don't have the clearance to Add Godowns</h3>
+                </center"
+			}
+		?>
 	</div>
 </div>
+
 <?php
 	if(isset($_POST['button1']) && $_SESSION['Eid'] == 1)
 	{

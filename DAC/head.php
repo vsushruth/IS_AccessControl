@@ -45,7 +45,7 @@
 						<li class="nav-item">
 								<a class="nav-link" href="godowns.php">Godowns</a>
 						</li>
-						<li class="nav-item">
+						<!-- <li class="nav-item">
 								<a class="nav-link" href="restock.php">Restock</a>
 						</li>
 						<li class="nav-item">
@@ -56,7 +56,7 @@
 						</li>
 						<li class="nav-item">
 								<a class="nav-link" href="customers.php">Customers</a>
-						</li>
+						</li> -->
 						<li class="nav-item">
 								<a class="nav-link" href="items.php">Items</a>
 						</li>

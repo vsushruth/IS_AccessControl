@@ -20,7 +20,7 @@
 
     echo "<h1><center>All Items</center></h1>";
 
-    $perm_sql = "SELECT Read_Access FROM access_matrix WHERE Employee_ID = '$Eid' AND Objects_ID='item' "
+    $perm_sql = "SELECT Read_Access FROM access_matrix WHERE Employee_ID = $Eid AND Objects_ID='item' "
     $permissions = $conn->query($perm_sql);
     if($permissions == true)
     {
@@ -56,7 +56,7 @@
             $mysqli = new mysqli($servername, $username, $password, $dbname);
             $Eid = $_SESSION['Eid'];
 
-            $perm_sql = "SELECT Write_Access FROM access_matrix WHERE Employee_ID = '$Eid' AND Objects_ID='item' "
+            $perm_sql = "SELECT Write_Access FROM access_matrix WHERE Employee_ID = $Eid AND Objects_ID='item' ";
             $permissions = $conn->query($perm_sql);
             if($permissions == false)
             {

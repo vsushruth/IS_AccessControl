@@ -27,8 +27,9 @@ echo "<h1><center>Items in Godown</center></h1>";
 $sql = "SELECT * FROM godown_item_details natural join item where Godown_ID = $Gid";
 $result = $conn->query($sql);
 
-$perm_sql = "SELECT Read_Access FROM access_matrix WHERE Employee_ID = '$Eid' AND Objects_ID = $Gid";
-$permission = $conn->query($perm_sql)
+$Gid_String = (string)$Gid;
+$perm_sql = "SELECT Read_Access FROM access_matrix WHERE Employee_ID = $Eid AND Objects_ID = $Gid_String";
+$permission = $conn->query($perm_sql);
 
 if($permission){
     if ($result->num_rows > 0) {
@@ -45,7 +46,7 @@ if($permission){
 }else{
     echo"<center><br>
         <h3>You don't have access to this data</h3>
-    </center>"
+    </center>";
 }
 
 
