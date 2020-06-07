@@ -6,6 +6,7 @@
 	$username = "root";
 	$password = "";
 	$dbname = "supermarket";
+	$Eid = $_SESSION['Eid'];
 
 	echo "<br><br><h1><center>All Godowns</center></h1>";
 	$conn = new mysqli($servername, $username, $password, $dbname);
@@ -48,37 +49,43 @@
     </div>
 
     <div class="col-lg-8 col-md-6 col-sm-6" >
+
+		<form method="post" id="godowns_putter">
+			<label>Location</label>
+			<br>
+			<input type="text" name="loc" required>
+			<br><br>
+			<label>Manager-ID</label>
+			<br>
+			<select name="Mid">
+			<?php
+				$sqlSelect="SELECT * FROM employee";
+				$result = $mysqli-> query ($sqlSelect);
+				while ($row = mysqli_fetch_array($result)) {
+					$rows[] = $row;
+				}
+				foreach ($rows as $row) {
+					print "<option value='" . $row['Employee_ID'] . "'>" .$row['Employee_ID']."(". $row['Employee_Name'] . ")</option>";
+				}
+			?>
+			</select>
+			<br><br>
+			<button type="submit" name="button1">Add</button>
+		</form>
+
 		<?php
 			$mysqli = new mysqli($servername, $username, $password, $dbname);
 			$Eid = $_SESSION['Eid'];
 
-			$perm_sql = "SELECT Write_Access FROM access_matrix WHERE Employee_ID = '$Eid' AND Objects_ID='godowns' ";
+			$perm_sql = "SELECT Write_Access FROM Access_Matrix WHERE Employee_ID = '$Eid' AND Objects_ID='godowns' ";
 			$permissions = $mysqli->query($perm_sql);
-			if($permissions)
+			if($permissions == false)
 			{
-				echo'<form method="post">
-					<label>Location</label>
-					<br>
-					<input type="text" name="loc" required>
-					<br><br>
-					<label>Manager-ID</label>
-					<br>
-					<select name="Mid">';
-					$sqlSelect="SELECT * FROM employee";
-					$result = $mysqli-> query ($sqlSelect);
-					while ($row = mysqli_fetch_array($result)) {
-						$rows[] = $row;
-					}
-					foreach ($rows as $row) {
-						print "<option value='" . $row['Employee_ID'] . "'>" .$row['Employee_ID']."(". $row['Employee_Name'] . ")</option>";
-					}
+				echo"<script type='text/javascript'>
+					var form = document.getElementById('godowns_putter');
+					form.style.displaty = none;
+				</script>";
 
-					echo'</select>
-					<br><br>
-					<button type="submit" name="button1">Add</button>
-				</form>';
-			}
-			else{
 				echo"<center>
                     <h3>You don't have the clearance to Add Godowns</h3>
                 </center>";
@@ -88,10 +95,11 @@
 </div>
 
 <?php
-	if(isset($_POST['button1']) && $_SESSION['Eid'] == 1)
+	if(isset($_POST['button1']) )//&& $_SESSION['Eid'] == 1
 	{
 		$Mid = $_POST['Mid'];
 		$loc = $_POST['loc'];
+		$Eid = $_SESSION['Eid'];
 		$q = "select * from godown where Godown_Location = '$loc' and Manager_ID = '$Mid'";
 
 		$con = mysqli_connect("127.0.0.1","root","");
@@ -111,6 +119,16 @@
 
 			if(mysqli_query($con, $q))
 			{
+				/*------------------------------------------
+				Adding the new godown into the access matrix
+				--------------------------------------------*/
+				$get_gid = "select Godown_ID from godown where Godown_Location = '$loc' and Manager_ID = '$Mid'";
+				$gid_added = mysqli_query($con, $get_gid);
+				$gid_added_str = (string)$gid_added;
+
+				$access_add = "INSERT INTO `Access_Matrix`(`Employee_ID`, `Objects_ID`, `Read_Access`, `Write_Access`, `Owner`) 
+				VALUES ($Eid, $gid_added_str, 'true', 'true', 'true')";
+
 				echo "Godown Added Successfully!!";
 				header('location:godowns.php');
 			}
@@ -121,10 +139,10 @@
 
 		}
 	}
-	else if($_SESSION['Eid'] != 1)
-	{
-		echo "You are not permitted to add Godown!!";
-	}
+	// else if($_SESSION['Eid'] != 1)
+	// {
+	// 	echo "You are not permitted to add Godown!!";
+	// }
 ?>
 <br>
 <center><h3><a href='home.php' style = "color : white; font-weight : bold; padding-left : 50px; text-decoration: underline">Back</a></h3></center>

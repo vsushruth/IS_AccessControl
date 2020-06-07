@@ -67,7 +67,7 @@
 		<?php
 			$mysqli = new mysqli($servername, $username, $password, $dbname);
 			
-			$purchases = (string)$Gid.'purchases';
+			$purchases = (string)$Gid.'p';
 			$perm_sql = "SELECT Write_Access FROM Access_Matrix WHERE Employee_ID = $Eid AND Objects_ID=$purchases";
 			$permission = $mysqli->query($perm_sql);
 
@@ -77,6 +77,11 @@
 						var form = document.getElementById('purchase_putter');
 						form.style.displaty = none;
 					</script>";
+
+				echo"<center>
+					<h3>You don't have the clearance to Add New Purchase</h3>
+				</center>";
+
 			}
 
 		?>
@@ -104,8 +109,9 @@
 		$Sid = $_POST['Sid'];
 		$input_date = $_POST['date'];
 		$date=date("Y-m-d",strtotime($input_date));
-		if(isManager($_SESSION['Eid'], $Gid))
-		{
+		// if(isManager($_SESSION['Eid'], $Gid))
+		// {
+
 			$q = "select * from purchase where Godown_ID = '$Gid' and Supplier_ID = '$Sid' and DOP = '$date'";
 
 			$con = mysqli_connect("127.0.0.1","root","");
@@ -166,11 +172,13 @@
 			$Pid = mysqli_fetch_row($result)[0];
 			echo "<br><br<b>Purchase exists!! Purchase id is : $Pid</b><br><br>";
 			echo "<a href='editpurchase.php?Pid=".$Pid."&Gid=".$Gid."&Sid=".$Sid."''>Edit this purchase</a><br><br>";
-		}
-		else
-		{
-			echo "You are not permitted to add Purchase!!";
-		}
+
+
+		// }
+		// else
+		// {
+		// 	echo "You are not permitted to add Purchase!!";
+		// }
 	}
 
 	

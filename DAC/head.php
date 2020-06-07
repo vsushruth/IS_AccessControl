@@ -60,9 +60,9 @@
 						<li class="nav-item">
 								<a class="nav-link" href="items.php">Items</a>
 						</li>
-						<li class="nav-item">
+						<!-- <li class="nav-item">
 								<a class="nav-link" href="admin.php">Details</a>
-						</li>
+						</li> -->
 						<li class="nav-item">
 								<a class="nav-link" style="color:black" href="logout.php"><h5>LOGOUT</h5></a>
 						</li>

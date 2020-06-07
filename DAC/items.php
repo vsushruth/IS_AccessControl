@@ -14,16 +14,16 @@
         die("Connection failed: " . $conn->connect_error);
     }
 
-    $sql = "SELECT * FROM item";
-    $result = $conn->query($sql);
-
-
     echo "<h1><center>All Items</center></h1>";
 
-    $perm_sql = "SELECT Read_Access FROM access_matrix WHERE Employee_ID = $Eid AND Objects_ID='items' ";
+    $perm_sql = "SELECT Read_Access FROM Access_Matrix WHERE Employee_ID = $Eid AND Objects_ID='items' ";
     $permissions = $conn->query($perm_sql);
     if($permissions == true)
     {
+
+        $sql = "SELECT * FROM item";
+        $result = $conn->query($sql);
+        
         if ($result->num_rows > 0) {
             echo "<table class = 'table table-hover table-striped' ><tr><th>Item ID</th><th>Item Name</th><th>Item Units</th><th>Item Unit Price</th></tr>";
             // output data of each row
@@ -56,11 +56,10 @@
             $mysqli = new mysqli($servername, $username, $password, $dbname);
             $Eid = $_SESSION['Eid'];
 
-            $perm_sql = "SELECT Write_Access FROM access_matrix WHERE Employee_ID = $Eid AND Objects_ID='items' ";
+            $perm_sql = "SELECT Write_Access FROM Access_Matrix WHERE Employee_ID = $Eid AND Objects_ID='items' ";
             $permissions = $mysqli->query($perm_sql);
             if($permissions == false)
             {
-
                 echo"<center>
                     <h3>You don't have the clearance to Add Items</h3>
                 </center><br><hr><br>";
@@ -111,6 +110,8 @@
         
         $q = "select * from item where Item_Name = '$name' and Item_Units = '$units'";
         
+        $con = mysqli_connect("127.0.0.1","root","");
+		mysqli_select_db($con, "supermarket");
         $result = mysqli_query($con, $q);
 
         $n = mysqli_num_rows($result);

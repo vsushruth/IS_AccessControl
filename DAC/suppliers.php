@@ -29,15 +29,25 @@ if ($conn->connect_error) {
 $sql = "SELECT * FROM supplier";
 $result = $conn->query($sql);
 
-if ($result->num_rows > 0) {
-    echo "<table  class = 'table table-hover table-striped'><tr><th>Supplier ID</th><th>Supplier Name</th><th>Supplier Contact</th></tr>";
-    // output data of each row
-    while($row = $result->fetch_assoc()) {
-        echo "<tr><td>" . $row["Supplier_ID"]. "</td><td>" . $row["Supplier_Name"]. "</td><td>" . $row["Supplier_Contact"]. "</td></tr>";
+//Check if user has Read Access for object 'suppliers'
+$perm_sql = "SELECT Read_Access FROM Access_Matrix WHERE Employee_ID = $Eid AND Objects_ID='suppliers'";
+$permission = $conn->query($sql);
+if($permission){
+    if ($result->num_rows > 0) {
+        echo "<table  class = 'table table-hover table-striped'><tr><th>Supplier ID</th><th>Supplier Name</th><th>Supplier Contact</th></tr>";
+        // output data of each row
+        while($row = $result->fetch_assoc()) {
+            echo "<tr><td>" . $row["Supplier_ID"]. "</td><td>" . $row["Supplier_Name"]. "</td><td>" . $row["Supplier_Contact"]. "</td></tr>";
+        }
+        echo "</table>";
+    } else {
+        echo "0 results";
     }
-    echo "</table>";
-} else {
-    echo "0 results";
+
+}else{
+    echo"<center>
+		<h3>You don't have access to this data</h3>
+	</center><br><hr>";
 }
 
 $conn->close();
@@ -49,7 +59,7 @@ $conn->close();
     </div>
 
     <div class="col-lg-8 col-md-6 col-sm-6" >
-        <form method="post">
+        <form method="post" id="supplier_putter">
             <label><h5>Name</h5></label>
             <br>
             <input type="text" name="name" required>
@@ -60,6 +70,27 @@ $conn->close();
             <br><br>
             <button type="submit" name="button2">Add</button>
         </form>
+
+        <?php
+
+            //Check if the user has Write_Access for the object 'suppliers'
+            $mysqli = new mysqli($servername, $username, $password, $dbname);
+			$Eid = $_SESSION['Eid'];
+
+			$perm_sql = "SELECT Write_Access FROM Access_Matrix WHERE Employee_ID = '$Eid' AND Objects_ID='suppliers' ";
+			$permissions = $mysqli->query($perm_sql);
+			if($permissions == false)
+			{
+				echo"<script type='text/javascript'>
+					var form = document.getElementById('supplier_putter');
+					form.style.displaty = none;
+				</script>";
+
+				echo"<center>
+                    <h3>You don't have the clearance to Add New Suppliers</h3>
+                </center>";
+			}
+		?>
     </div>
 </div>
 
