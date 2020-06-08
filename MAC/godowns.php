@@ -101,6 +101,8 @@
 		$Mid = $_POST['Mid'];
 		$loc = $_POST['loc'];
 		$Eid = $_SESSION['Eid'];
+		$Clearance = $_SESSION['Clearance'];
+
 		$q = "select * from godown where Godown_Location = '$loc' and Manager_ID = '$Mid'";
 
 		$con = mysqli_connect("127.0.0.1","root","");
@@ -127,8 +129,8 @@
 				$gid_added = mysqli_query($con, $get_gid);
 				$gid_added_str = (string)$gid_added;
 
-				$access_add = "INSERT INTO `Access_Matrix`(`Employee_ID`, `Objects_ID`, `Read_Access`, `Write_Access`, `Owner`) 
-				VALUES ($Eid, $gid_added_str, 'true', 'true', 'true')";
+				$access_add = "INSERT INTO `Access_Matrix`(`Objects_ID`, `Clearance`) 
+				VALUES ($gid_added_str, $Clearance)";
 
 				echo "Godown Added Successfully!!";
 				header('location:godowns.php');
