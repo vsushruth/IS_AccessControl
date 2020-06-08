@@ -19,7 +19,7 @@
 	$result = $conn->query($sql);
 
 	//$Gid_String = (string)$Gid;
-	$perm_sql = "SELECT Clearance FROM Access_Matrix WHERE Employee_ID = $Eid AND Objects_ID='godowns'";
+	$perm_sql = "SELECT Clearance FROM Access_Matrix WHERE Objects_ID='godowns'";
 	$permission = $conn->query($sql);
 
 	if($permission <= $Clearance){
@@ -78,9 +78,9 @@
 			$Eid = $_SESSION['Eid'];
 			$Clearance = $_SESSION['Clearance'];
 
-			$perm_sql = "SELECT Clearance FROM Access_Matrix WHERE Employee_ID = '$Eid' AND Objects_ID='godowns' ";
+			$perm_sql = "SELECT Clearance FROM Access_Matrix WHERE Objects_ID='godowns' ";
 			$permissions = $mysqli->query($perm_sql);
-			if($permissions > $Clearance)
+			if($permissions >= $Clearance)
 			{
 				echo"<script type='text/javascript'>
 					var form = document.getElementById('godowns_putter');

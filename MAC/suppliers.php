@@ -33,7 +33,7 @@ $sql = "SELECT * FROM supplier";
 $result = $conn->query($sql);
 
 //Check if user has Read Access for object 'suppliers'
-$perm_sql = "SELECT Clearance FROM Access_Matrix WHERE Employee_ID = $Eid AND Objects_ID='suppliers'";
+$perm_sql = "SELECT Clearance FROM Access_Matrix WHERE Objects_ID='suppliers'";
 $permission = $conn->query($sql);
 if($permission <= $Clearance){
     if ($result->num_rows > 0) {
@@ -82,9 +82,9 @@ $conn->close();
 			$Eid = $_SESSION['Eid'];
 			$Clearance = $_SESSION['Clearance'];
 
-			$perm_sql = "SELECT Clearance FROM Access_Matrix WHERE Employee_ID = '$Eid' AND Objects_ID='suppliers' ";
+			$perm_sql = "SELECT Clearance FROM Access_Matrix WHERE Objects_ID='suppliers' ";
 			$permissions = $mysqli->query($perm_sql);
-			if($permissions > $Clearance)
+			if($permissions >= $Clearance)
 			{
 				echo"<script type='text/javascript'>
 					var form = document.getElementById('supplier_putter');

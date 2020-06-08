@@ -34,7 +34,7 @@
 		echo'<br><h2>
 		<center>Objects you are cleared to access</center>
 		</h2><br><br>';
-		$access_sql = "SELECT * FROM Access_Matrix where Employee_ID = $Eid";
+		$access_sql = "SELECT * FROM Access_Matrix";
 		$result = $conn->query($access_sql);
 		if ($result->num_rows > 0) {
 			echo "<table class = 'table table-hover table-striped'>

@@ -17,7 +17,7 @@
 
     echo "<h1><center>All Items</center></h1>";
 
-    $perm_sql = "SELECT Clearance FROM Access_Matrix WHERE Employee_ID = $Eid AND Objects_ID='items' ";
+    $perm_sql = "SELECT Clearance FROM Access_Matrix WHERE Objects_ID='items' ";
     $permissions = $conn->query($perm_sql);
     if($permissions <= $Clearance)
     {
@@ -56,9 +56,9 @@
             $mysqli = new mysqli($servername, $username, $password, $dbname);
             $Eid = $_SESSION['Eid'];
 
-            $perm_sql = "SELECT Clearance FROM Access_Matrix WHERE Employee_ID = $Eid AND Objects_ID='items' ";
+            $perm_sql = "SELECT Clearance FROM Access_Matrix WHERE Objects_ID='items' ";
             $permissions = $mysqli->query($perm_sql);
-            if($permissions > $Clearance)
+            if($permissions >= $Clearance)
             {
                 echo"<center>
                     <h3>You don't have the clearance to Add Items</h3>

@@ -30,7 +30,7 @@ $sql = "SELECT * FROM godown_item_details natural join item where Godown_ID = $G
 $result = $conn->query($sql);
 
 $Gid_String = (string)$Gid;
-$perm_sql = "SELECT Clearance FROM access_matrix WHERE Employee_ID = $Eid AND Objects_ID = $Gid_String";
+$perm_sql = "SELECT Clearance FROM access_matrix WHERE Objects_ID = $Gid_String";
 $permission = $conn->query($perm_sql);
 
 if($permission <= $Clearance){
@@ -60,7 +60,7 @@ $sql = "SELECT * FROM purchase natural join purchase_item_details natural join g
 $result = $conn->query($sql);
 
 $purchase_id = (string)$Gid.'p';
-$perm_sql = "SELECT Clearance FROM Access_Matrix WHERE Employee_ID = $Eid AND Objects_ID=$purchase_id";
+$perm_sql = "SELECT Clearance FROM Access_Matrix WHERE Objects_ID=$purchase_id";
 $permission = $conn->query($perm_sql);
 
 if($permission <= $Clearance){
