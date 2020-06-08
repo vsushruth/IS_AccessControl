@@ -5,12 +5,16 @@
 		header('location:login.php');
 ?>
 
+
+<html>
+<body>
+
 <?php include "head.php"; ?>
 <!-- <a href="logout.php">LOGOUT</a> -->
 
 <br><br>
 <div class="container">
-		<?php 
+	<?php 
 		$servername = "localhost";
 		$username = "root";
 		$password = "";
@@ -48,7 +52,7 @@
 					<td>".$row["Objects_ID"]."</td>
 					<td>".$row["Read_Access"]."</td>
 					<td>".$row["Write_Access"]."</td>
-					<td>".$row["Owner"]."</td>
+					<td>".$row["Owners"]."</td>
 				</tr>";
 			}
 			echo "</table>";
@@ -58,36 +62,195 @@
 			echo "0 results";
 		}
 
-		?>
-	<br>
+	?>
+<br>
 </div>
 
 <!-- ---------------------------------------------------------
 User can change the rights given to others only for those
 objects which the User is the Owner for.
----------------------------------------------------------- -->
+-------------------------------------------------------------->
+
+<div class="container">
+<center><h1>Objects you Own</h1></center>
+<?php
+
+	$servername = "localhost";
+	$username = "root";
+	$password = "";
+	$dbname = "supermarket";
+	$Eid = $_SESSION['Eid'];
+
+	$mysqli = new mysqli($servername, $username, $password, $dbname);
+
+	$access_sql = "SELECT * FROM Access_Matrix where Employee_ID = $Eid AND Owners='ture'";
+	$result = $conn->query($access_sql);
+	if ($result->num_rows > 0) {
+		echo "<table class = 'table table-hover table-striped'>
+		<tr>
+			<th>Object ID</th>
+			<th>Read Access</th>
+			<th>Write Access</th>
+			<th>Owner</th>
+		</tr>";
+	
+		while($row = $result->fetch_assoc()) {
+			echo "<tr>
+				<td>".$row["Objects_ID"]."</td>
+				<td>".$row["Read_Access"]."</td>
+				<td>".$row["Write_Access"]."</td>
+				<td>".$row["Owners"]."</td>
+			</tr>";
+		}
+		echo "</table>";
+
+	} 
+	else {
+		echo "0 results";
+	}
+
+?>
+</div>
+
+
+<div class = "container-fluid row padding" >
+    <div class="col-lg-3 col-md-6 col-sm-6" >
+        <h1 style = "padding-left: 15%"><br>Modify Access Rights : </h1>
+    </div>
+
+    <div class="col-lg-9 col-md-6 col-sm-6" >
+		<form method="post" id='purchase_putter'>
+			<br>
+			<label><h5>Object ID</h5></label>
+			<br>
+			<select name="Object">
+			<?php
+				$mysqli = new mysqli($servername, $username, $password, $dbname);
+				$sqlSelect="SELECT Objects_ID FROM Access_Matrix where Employee_ID = $Eid AND Owners='ture'";
+				$result = $mysqli-> query ($sqlSelect);
+				while ($row = mysqli_fetch_array($result)) {
+					$rows[] = $row;
+				}
+				foreach ($rows as $row) {
+					print "<option value='" . $row['Objects_ID'] . "'>" .$row['Objects_ID']."</option>";
+				}
+			?>
+			</select>
+			<br><br>
+			<label><h5>Employee ID</h5></label>
+			<br>
+			<select name="Employees">
+			<?php
+				$mysqli = new mysqli($servername, $username, $password, $dbname);
+				$sqlSelect="SELECT Employee_ID FROM Access_Matrix";
+				$result = $mysqli-> query ($sqlSelect);
+				while ($row = mysqli_fetch_array($result)) {
+					$rows1[] = $row;
+				}
+				foreach ($rows1 as $row) {
+					print "<option value='" . $row['Employee_ID'] . "'>" .$row['Employee_ID']. "</option>";
+				}
+			?>
+			</select>
+			<br><br>
+			<label><h5>Read Access</h5></label>
+			<br>
+			<select name="Read_Access">
+			<?php
+				$mysqli = new mysqli($servername, $username, $password, $dbname);
+				$sqlSelect="SELECT Read_Access FROM Access_Matrix";
+				$result = $mysqli-> query ($sqlSelect);
+				while ($row = mysqli_fetch_array($result)) {
+					$rows1[] = $row;
+				}
+				foreach ($rows1 as $row) {
+					print "<option value='" . $row['Read_Access'] . "'>" .$row['Read_Access']. "</option>";
+				}
+			?>
+			</select>
+			<br><br>
+			<label><h5>Write Access</h5></label>
+			<br>
+			<select name="Write_Access">
+			<?php
+				$mysqli = new mysqli($servername, $username, $password, $dbname);
+				$sqlSelect="SELECT Write_Access FROM Access_Matrix";
+				$result = $mysqli-> query ($sqlSelect);
+				while ($row = mysqli_fetch_array($result)) {
+					$rows1[] = $row;
+				}
+				foreach ($rows1 as $row) {
+					print "<option value='" . $row['Write_Access'] . "'>" .$row['Write_Access']. "</option>";
+				}
+			?>
+			</select>
+			<br><br>
+			<button type="submit" name="button1">Add</button>
+		</form>
+	</div>
+</div>
 
 
 
+<?php
+	
+	if(isset($_POST['button1']))
+	{
+		$Obj_id = $_POST['Object'];
+		$Emp_id = $_POST['Employees'];
+		$Read_Access = $_POST['Read_Access'];
+		$Write_Access = $_POST['Write_Access'];
+	
+		$q = "select * from Access_Matrix where Employee_ID = $Emp_id and Objects_ID = '$Obj_id' ";
+
+		$con = mysqli_connect("127.0.0.1","root","");
+		mysqli_select_db($con, "supermarket");
+		
+		$result = mysqli_query($con, $q);
+
+		$n = mysqli_num_rows($result);
+
+		if($n == 1)
+		{
+
+			$servername = "localhost";
+			$username = "root";
+			$password = "";
+			$dbname = "supermarket";
+
+			$conn = new mysqli($servername, $username, $password, $dbname);
+			if ($conn->connect_error) {
+				die("Connection failed: " . $conn->connect_error);
+			}
+			$sql = "UPDATE Access_Matrix SET Read_Access=$Read_Access, Write_Access=$Write_Access 
+			WHERE Employee_ID=$Emp_id AND Objects_ID='$Obj_id'";
+
+			$result = $conn->query($sql);
+
+			if ($result) {
+				echo "<center>
+				<h3>Access Rights Update Successful</h3>
+				</center>";
+
+			} else {
+				echo "<center>
+				<h3>Unable to update Access Rights</h3>
+				</center>";
+			}
+
+		}
+		else
+		{
+			echo "<center>
+				<h3>Error : Invalid Inputs!!</h3>
+				</center>";
+			
+		}
 
 
-<!-- <img src = "img/superExterior.jpg" style = " display: block; margin-left: auto; margin-right: auto; width: 50%;" > -->
+	}
+	
+?>
 
-
-<!-- <a href="summary.php">Summary</a> -->
-
-<!-- <a href="suppliers.php">Suppliers</a>
-
-<a href="purchase.php">Purchase</a>
-
-<a href="godowns.php">Godowns</a>
-
-<a href="restock.php">Restock</a>
-
-<a href="showrooms.php">Showrooms</a>
-
-<a href="sale.php">Sale</a>
-
-<a href="customers.php">Customers</a>
-
-<br><br><a href="items.php">Items</a> -->
+</body>
+</html>
