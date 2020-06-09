@@ -7,7 +7,7 @@
 	$servername = "localhost";
 	$username = "root";
 	$password = "";
-	$dbname = "supermarket";
+	$dbname = "supermarket_mac";
 ?>
 
 <?php include "head.php"; ?>
@@ -76,11 +76,11 @@
 			$perm_sql = "SELECT Clearance FROM Access_Matrix WHERE Objects_ID=$purchases";
 			$permission = $mysqli->query($perm_sql);
 
-			if($permission >= $Clearance){
+			if($permission->fetch_assoc()["Clearance"] >= $Clearance){
 				echo"
 					<script type='text/javascript'>
 						var form = document.getElementById('purchase_putter');
-						form.style.displaty = none;
+						form.style.display = 'none';
 					</script>";
 
 				echo"<center>
@@ -99,7 +99,7 @@
 		$q = "select * from godown where Godown_ID = $gid and Manager_ID = $mid";
 
 		$con = mysqli_connect("127.0.0.1","root","");
-		mysqli_select_db($con, "supermarket");
+		mysqli_select_db($con, "supermarket_mac");
 		
 		$result = mysqli_query($con, $q);
 
@@ -120,7 +120,7 @@
 			$q = "select * from purchase where Godown_ID = '$Gid' and Supplier_ID = '$Sid' and DOP = '$date'";
 
 			$con = mysqli_connect("127.0.0.1","root","");
-			mysqli_select_db($con, "supermarket");
+			mysqli_select_db($con, "supermarket_mac");
 			
 			$result = mysqli_query($con, $q);
 
@@ -136,7 +136,7 @@
 				$servername = "localhost";
 				$username = "root";
 				$password = "";
-				$dbname = "supermarket";
+				$dbname = "supermarket_mac";
 
 				$conn = new mysqli($servername, $username, $password, $dbname);
 				if ($conn->connect_error) {

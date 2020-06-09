@@ -7,7 +7,7 @@
 	$servername = "localhost";
 	$username = "root";
 	$password = "";
-	$dbname = "supermarket";
+	$dbname = "supermarket_rbac";
 ?>
 <?php include "head.php"; ?>
 
@@ -94,7 +94,7 @@
 			$q = "select Quantity from purchase_item_details where Item_ID = $Iid and Purchase_ID = $Pid";
 
 			$con = mysqli_connect("127.0.0.1","root","");
-			mysqli_select_db($con, "supermarket");
+			mysqli_select_db($con, "supermarket_rbac");
 			
 			$result = mysqli_query($con, $q);
 

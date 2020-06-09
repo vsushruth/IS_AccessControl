@@ -18,7 +18,7 @@
 
     $perm_sql = "SELECT Read_Access FROM Access_Matrix WHERE Employee_ID = $Eid AND Objects_ID='items' ";
     $permissions = $conn->query($perm_sql);
-    if($permissions == true)
+    if($permissions->fetch_assoc()['Read_Access'] == true)
     {
 
         $sql = "SELECT * FROM item";
@@ -58,7 +58,7 @@
 
             $perm_sql = "SELECT Write_Access FROM Access_Matrix WHERE Employee_ID = $Eid AND Objects_ID='items' ";
             $permissions = $mysqli->query($perm_sql);
-            if($permissions == false)
+            if($permissions->fetch_assoc()['Write_Access'] == false)
             {
                 echo"<center>
                     <h3>You don't have the clearance to Add Items</h3>
@@ -129,8 +129,8 @@
 
         if(mysqli_query($con, $q))
         {
-            echo "Item Added Successfully!!";
-            header('location:items.php');
+            echo "<h1><center>Item Added Successfully!! Refresh page to view updates</center></h1>";
+            // @header('location:items.php');
         }
         else
         {

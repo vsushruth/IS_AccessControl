@@ -31,8 +31,8 @@ $result = $conn->query($sql);
 
 //Check if user has Read Access for object 'suppliers'
 $perm_sql = "SELECT Read_Access FROM Access_Matrix WHERE Employee_ID = $Eid AND Objects_ID='suppliers'";
-$permission = $conn->query($sql);
-if($permission){
+$permission = $conn->query($perm_sql);
+if($permission->fetch_assoc()['Read_Access']){
     if ($result->num_rows > 0) {
         echo "<table  class = 'table table-hover table-striped'><tr><th>Supplier ID</th><th>Supplier Name</th><th>Supplier Contact</th></tr>";
         // output data of each row
@@ -79,11 +79,11 @@ $conn->close();
 
 			$perm_sql = "SELECT Write_Access FROM Access_Matrix WHERE Employee_ID = '$Eid' AND Objects_ID='suppliers' ";
 			$permissions = $mysqli->query($perm_sql);
-			if($permissions == false)
+			if($permissions->fetch_assoc()['Write_Access'] == false)
 			{
 				echo"<script type='text/javascript'>
 					var form = document.getElementById('supplier_putter');
-					form.style.displaty = none;
+					form.style.display = 'none';
 				</script>";
 
 				echo"<center>

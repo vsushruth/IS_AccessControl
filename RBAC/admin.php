@@ -11,7 +11,7 @@
 	$servername = "localhost";
 	$username = "root";
 	$password = "";
-	$dbname = "supermarket";
+	$dbname = "supermarket_rbac";
 
 	$conn = new mysqli($servername, $username, $password, $dbname);
 	if ($conn->connect_error) {
@@ -44,7 +44,7 @@
 		else
 		{
 	        $con = mysqli_connect("127.0.0.1","root","");
-	        mysqli_select_db($con, "supermarket");
+	        mysqli_select_db($con, "supermarket_rbac");
 
 	        $q = "select * from employee_contacts where Employee_ID = $Eid and Contact = $num";
 	        

@@ -3,7 +3,7 @@
 	session_start();
 
 	$con = mysqli_connect("127.0.0.1","root","");
-	mysqli_select_db($con, "supermarket");
+	mysqli_select_db($con, "supermarket_rbac");
 
 	$name = $_POST['name'];
 	$Sid = $_POST['Sid'];

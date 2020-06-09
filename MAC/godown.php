@@ -14,7 +14,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "supermarket";
+$dbname = "supermarket_mac";
 
 $Eid = $_SESSION['Eid'];
 $Clearance = $_SESSION['Clearance'];
@@ -33,7 +33,7 @@ $Gid_String = (string)$Gid;
 $perm_sql = "SELECT Clearance FROM access_matrix WHERE Objects_ID = $Gid_String";
 $permission = $conn->query($perm_sql);
 
-if($permission <= $Clearance){
+if($permission->fetch_assoc()["Clearance"] <= $Clearance){
     if ($result->num_rows > 0) {
         echo "<table class = 'table table-hover table-striped'><tr><th>Item ID</th><th>Item Name</th><th>Quantity</th><th>Price per unit</th><th>Total price</th></tr>";
     
@@ -63,7 +63,7 @@ $purchase_id = (string)$Gid.'p';
 $perm_sql = "SELECT Clearance FROM Access_Matrix WHERE Objects_ID=$purchase_id";
 $permission = $conn->query($perm_sql);
 
-if($permission <= $Clearance){
+if($permissions->fetch_assoc()["Clearance"] <= $Clearance){
     if ($result->num_rows > 0) {
         echo "<table class = 'table table-hover table-striped'><tr><th>Date</th><th>Item ID</th><th>Item Name</th><th>Supplier ID</th><th>Supplier Name</th><th>Quantity</th><th>Price per unit</th><th>Total price</th></tr>";
 

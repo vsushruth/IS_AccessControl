@@ -17,10 +17,10 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "supermarket";
+$dbname = "supermarket_mac";
 
 $Eid = $_SESSION['Eid'];
-$Clearance = $_SESSION['Clearance'];
+@$Clearance = $_SESSION['Clearance'];
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -35,7 +35,7 @@ $result = $conn->query($sql);
 //Check if user has Read Access for object 'suppliers'
 $perm_sql = "SELECT Clearance FROM Access_Matrix WHERE Objects_ID='suppliers'";
 $permission = $conn->query($sql);
-if($permission <= $Clearance){
+if($permission->fetch_assoc()["Clearance"] <= $Clearance){
     if ($result->num_rows > 0) {
         echo "<table  class = 'table table-hover table-striped'><tr><th>Supplier ID</th><th>Supplier Name</th><th>Supplier Contact</th></tr>";
         // output data of each row
@@ -84,11 +84,11 @@ $conn->close();
 
 			$perm_sql = "SELECT Clearance FROM Access_Matrix WHERE Objects_ID='suppliers' ";
 			$permissions = $mysqli->query($perm_sql);
-			if($permissions >= $Clearance)
+			if($permissions->fetch_assoc()["Clearance"] >= $Clearance)
 			{
 				echo"<script type='text/javascript'>
 					var form = document.getElementById('supplier_putter');
-					form.style.displaty = none;
+					form.style.display = 'none';
 				</script>";
 
 				echo"<center>
@@ -107,7 +107,7 @@ $conn->close();
         $q = "select * from supplier where Supplier_Name = '$name' and Supplier_Contact = '$contact'";
         // echo $q;
         $con = mysqli_connect("127.0.0.1","root","");
-        mysqli_select_db($con, "supermarket");
+        mysqli_select_db($con, "supermarket_mac");
         
         $result = mysqli_query($con, $q);
 

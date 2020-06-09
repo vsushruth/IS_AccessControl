@@ -14,7 +14,7 @@
 		$servername = "localhost";
 		$username = "root";
 		$password = "";
-		$dbname = "supermarket";
+		$dbname = "supermarket_rbac";
 		$Eid = $_SESSION['Eid'];
 		$Role = $_SESSION['Role'];
 
@@ -35,7 +35,7 @@
 		<center>Role-Based Access Matrix</center>
 		</h2><br><br>';
 		$access_sql = "SELECT * FROM Access_Matrix";
-		$result = $conn->query($access_sql);
+		$result = $mysqli->query($access_sql);
 		if ($result->num_rows > 0) {
 			echo "<table class = 'table table-hover table-striped'>
 			<tr>

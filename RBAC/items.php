@@ -10,7 +10,7 @@
     $servername = "localhost";
     $username = "root";
     $password = "";
-    $dbname = "supermarket";
+    $dbname = "supermarket_rbac";
 
     $conn = new mysqli($servername, $username, $password, $dbname);
     if ($conn->connect_error) {
@@ -21,7 +21,7 @@
 
     $perm_sql = "SELECT Read_Access FROM Access_Matrix WHERE Roles=$Role AND Objects_ID='items' ";
     $permissions = $conn->query($perm_sql);
-    if($permissions)
+    if($permissions->fetch_assoc()["Read_Access"])
     {
         $sql = "SELECT * FROM item";
         $result = $conn->query($sql);
@@ -61,7 +61,7 @@
 
             $perm_sql = "SELECT Write_Access FROM Access_Matrix WHERE Roles=$Role AND Objects_ID='items' ";
             $permissions = $mysqli->query($perm_sql);
-            if($permissions == false)
+            if($permissions->fetch_assoc()["Write_Access"] == false)
             {
                 echo"<center>
                     <h3>You don't have the clearance to Add Items</h3>
@@ -114,7 +114,7 @@
         $q = "select * from item where Item_Name = '$name' and Item_Units = '$units'";
         
         $con = mysqli_connect("127.0.0.1","root","");
-		mysqli_select_db($con, "supermarket");
+		mysqli_select_db($con, "supermarket_rbac");
         $result = mysqli_query($con, $q);
 
         $n = mysqli_num_rows($result);

@@ -74,4 +74,5 @@
 
 <?php
 		@$Eid = $_SESSION['Eid'];
+		@$Gid = $_SESSION['Gid'];
 ?>

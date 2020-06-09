@@ -5,7 +5,7 @@
 	$servername = "localhost";
 	$username = "root";
 	$password = "";
-	$dbname = "supermarket";
+	$dbname = "supermarket_mac";
 	$Eid = $_SESSION['Eid'];
 	$Clearance = $_SESSION['Clearance'];
 
@@ -22,7 +22,7 @@
 	$perm_sql = "SELECT Clearance FROM Access_Matrix WHERE Objects_ID='godowns'";
 	$permission = $conn->query($sql);
 
-	if($permission <= $Clearance){
+	if($permission->fetch_assoc()["Clearance"] <= $Clearance){
 		if ($result->num_rows > 0) {
 			echo "<table class = 'table table-hover table-striped'><tr><th>Godown ID</th><th>Godown Location</th><th>Manager Name</th></tr>";
 	
@@ -80,11 +80,11 @@
 
 			$perm_sql = "SELECT Clearance FROM Access_Matrix WHERE Objects_ID='godowns' ";
 			$permissions = $mysqli->query($perm_sql);
-			if($permissions >= $Clearance)
+			if($permissions->fetch_assoc()["Clearance"] >= $Clearance)
 			{
 				echo"<script type='text/javascript'>
 					var form = document.getElementById('godowns_putter');
-					form.style.displaty = none;
+					form.style.display = 'none';
 				</script>";
 
 				echo"<center>
@@ -106,7 +106,7 @@
 		$q = "select * from godown where Godown_Location = '$loc' and Manager_ID = '$Mid'";
 
 		$con = mysqli_connect("127.0.0.1","root","");
-		mysqli_select_db($con, "supermarket");
+		mysqli_select_db($con, "supermarket_mac");
 		
 		$result = mysqli_query($con, $q);
 

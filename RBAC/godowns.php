@@ -5,7 +5,7 @@
 	$servername = "localhost";
 	$username = "root";
 	$password = "";
-	$dbname = "supermarket";
+	$dbname = "supermarket_rbac";
 	$Eid = $_SESSION['Eid'];
 	$Role = $_SESSION['Role'];
 
@@ -20,9 +20,9 @@
 
 	//$Gid_String = (string)$Gid;
 	$perm_sql = "SELECT Read_Access FROM Access_Matrix WHERE Roles=$Role AND Objects_ID='godowns'";
-	$permission = $conn->query($sql);
+	$permission = $conn->query($perm_sql);
 
-	if($permission){
+	if($permission->fetch_assoc()["Read_Access"]){
 		if ($result->num_rows > 0) {
 			echo "<table class = 'table table-hover table-striped'><tr><th>Godown ID</th><th>Godown Location</th><th>Manager Name</th></tr>";
 	
@@ -84,7 +84,7 @@
 			{
 				echo"<script type='text/javascript'>
 					var form = document.getElementById('godowns_putter');
-					form.style.displaty = none;
+					form.style.display = 'none';
 				</script>";
 
 				echo"<center>
@@ -106,7 +106,7 @@
 		$q = "select * from godown where Godown_Location = '$loc' and Manager_ID = '$Mid'";
 
 		$con = mysqli_connect("127.0.0.1","root","");
-		mysqli_select_db($con, "supermarket");
+		mysqli_select_db($con, "supermarket_rbac");
 		
 		$result = mysqli_query($con, $q);
 

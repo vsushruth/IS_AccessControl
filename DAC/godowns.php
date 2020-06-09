@@ -20,9 +20,9 @@
 
 	//$Gid_String = (string)$Gid;
 	$perm_sql = "SELECT Read_Access FROM Access_Matrix WHERE Employee_ID = $Eid AND Objects_ID='godowns'";
-	$permission = $conn->query($sql);
+	$permission = $conn->query($perm_sql);
 
-	if($permission){
+	if($permission->fetch_assoc()['Read_Access']){
 		if ($result->num_rows > 0) {
 			echo "<table class = 'table table-hover table-striped'><tr><th>Godown ID</th><th>Godown Location</th><th>Manager Name</th></tr>";
 	
@@ -79,11 +79,11 @@
 
 			$perm_sql = "SELECT Write_Access FROM Access_Matrix WHERE Employee_ID = '$Eid' AND Objects_ID='godowns' ";
 			$permissions = $mysqli->query($perm_sql);
-			if($permissions == false)
+			if($permissions->fetch_assoc()['Write_Access'] == false)
 			{
 				echo"<script type='text/javascript'>
 					var form = document.getElementById('godowns_putter');
-					form.style.displaty = none;
+					form.style.display = 'none';
 				</script>";
 
 				echo"<center>

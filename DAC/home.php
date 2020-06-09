@@ -37,7 +37,7 @@
 		<center>Your Access Rights</center>
 		</h2><br><br>';
 		$access_sql = "SELECT * FROM Access_Matrix where Employee_ID = $Eid";
-		$result = $conn->query($access_sql);
+		$result = $mysqli->query($access_sql);
 		if ($result->num_rows > 0) {
 			echo "<table class = 'table table-hover table-striped'>
 			<tr>
@@ -84,8 +84,8 @@ objects which the User is the Owner for.
 	$mysqli = new mysqli($servername, $username, $password, $dbname);
 
 	$access_sql = "SELECT * FROM Access_Matrix where Employee_ID = $Eid AND Owners='ture'";
-	$result = $conn->query($access_sql);
-	if ($result->num_rows > 0) {
+	$result = $mysqli->query($access_sql);
+	if ($result && $result->num_rows > 0) {
 		echo "<table class = 'table table-hover table-striped'>
 		<tr>
 			<th>Object ID</th>
