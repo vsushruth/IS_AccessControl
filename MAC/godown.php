@@ -18,6 +18,7 @@ $dbname = "supermarket_mac";
 
 $Eid = $_SESSION['Eid'];
 $Clearance = $_SESSION['Clearance'];
+$Gid = $_GET['Gid'];
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
@@ -63,7 +64,7 @@ $purchase_id = (string)$Gid.'p';
 $perm_sql = "SELECT Clearance FROM Access_Matrix WHERE Objects_ID=$purchase_id";
 $permission = $conn->query($perm_sql);
 
-if($permissions->fetch_assoc()["Clearance"] <= $Clearance){
+if($permission <= $Clearance){
     if ($result->num_rows > 0) {
         echo "<table class = 'table table-hover table-striped'><tr><th>Date</th><th>Item ID</th><th>Item Name</th><th>Supplier ID</th><th>Supplier Name</th><th>Quantity</th><th>Price per unit</th><th>Total price</th></tr>";
 

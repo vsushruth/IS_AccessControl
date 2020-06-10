@@ -71,7 +71,7 @@
 			$perm_sql = "SELECT Write_Access FROM Access_Matrix WHERE Employee_ID = $Eid AND Objects_ID=$purchases";
 			$permission = $mysqli->query($perm_sql);
 
-			if($permission->num_rows > 0 && $permissions->fetch_assoc()['Read_Access'] == false){
+			if($permission == false){
 				echo"
 					<script type='text/javascript'>
 						var form = document.getElementById('purchase_putter');

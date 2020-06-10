@@ -20,7 +20,7 @@ $password = "";
 $dbname = "supermarket_mac";
 
 $Eid = $_SESSION['Eid'];
-@$Clearance = $_SESSION['Clearance'];
+$Clearance = $_SESSION['Clearance'];
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -34,8 +34,8 @@ $result = $conn->query($sql);
 
 //Check if user has Read Access for object 'suppliers'
 $perm_sql = "SELECT Clearance FROM Access_Matrix WHERE Objects_ID='suppliers'";
-$permission = $conn->query($sql);
-if($permission->fetch_assoc()["Clearance"] <= $Clearance){
+$permission = $conn->query($perm_sql);
+if(mysqli_num_rows($permission) > 0 && $permission->fetch_assoc()["Clearance"] <= $Clearance){
     if ($result->num_rows > 0) {
         echo "<table  class = 'table table-hover table-striped'><tr><th>Supplier ID</th><th>Supplier Name</th><th>Supplier Contact</th></tr>";
         // output data of each row
@@ -83,8 +83,8 @@ $conn->close();
 			$Clearance = $_SESSION['Clearance'];
 
 			$perm_sql = "SELECT Clearance FROM Access_Matrix WHERE Objects_ID='suppliers' ";
-			$permissions = $mysqli->query($perm_sql);
-			if($permissions->fetch_assoc()["Clearance"] >= $Clearance)
+            $permissions = $mysqli->query($perm_sql);
+			if(mysqli_num_rows($permissions) == 0 || $permissions->fetch_assoc()["Clearance"] >= $Clearance)
 			{
 				echo"<script type='text/javascript'>
 					var form = document.getElementById('supplier_putter');

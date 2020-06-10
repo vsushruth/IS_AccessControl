@@ -52,7 +52,7 @@
 					<td>".$row["Objects_ID"]."</td>
 					<td>".$row["Read_Access"]."</td>
 					<td>".$row["Write_Access"]."</td>
-					<td>".$row["Owners"]."</td>
+					<td>".$row["Owner"]."</td>
 				</tr>";
 			}
 			echo "</table>";
@@ -83,7 +83,7 @@ objects which the User is the Owner for.
 
 	$mysqli = new mysqli($servername, $username, $password, $dbname);
 
-	$access_sql = "SELECT * FROM Access_Matrix where Employee_ID = $Eid AND Owners='ture'";
+	$access_sql = "SELECT * FROM Access_Matrix where Employee_ID = $Eid AND Owner=1";
 	$result = $mysqli->query($access_sql);
 	if ($result && $result->num_rows > 0) {
 		echo "<table class = 'table table-hover table-striped'>
@@ -99,7 +99,7 @@ objects which the User is the Owner for.
 				<td>".$row["Objects_ID"]."</td>
 				<td>".$row["Read_Access"]."</td>
 				<td>".$row["Write_Access"]."</td>
-				<td>".$row["Owners"]."</td>
+				<td>".$row["Owner"]."</td>
 			</tr>";
 		}
 		echo "</table>";
@@ -126,12 +126,14 @@ objects which the User is the Owner for.
 			<select name="Object">
 			<?php
 				$mysqli = new mysqli($servername, $username, $password, $dbname);
-				$sqlSelect="SELECT Objects_ID FROM Access_Matrix where Employee_ID = $Eid AND Owners='ture'";
+				$sqlSelect="SELECT Objects_ID FROM Access_Matrix where Employee_ID = $Eid AND owner=1";
 				$result = $mysqli-> query ($sqlSelect);
 				while ($row = mysqli_fetch_array($result)) {
 					$rows[] = $row;
 				}
+				// $rows[] = ['items', 'suppliers', 'godowns', 'purchase'];
 				foreach ($rows as $row) {
+					echo "$row";
 					print "<option value='" . $row['Objects_ID'] . "'>" .$row['Objects_ID']."</option>";
 				}
 			?>
@@ -142,13 +144,13 @@ objects which the User is the Owner for.
 			<select name="Employees">
 			<?php
 				$mysqli = new mysqli($servername, $username, $password, $dbname);
-				$sqlSelect="SELECT Employee_ID FROM Access_Matrix";
+				$sqlSelect="SELECT Employee_ID FROM Employee";
 				$result = $mysqli-> query ($sqlSelect);
 				while ($row = mysqli_fetch_array($result)) {
 					$rows1[] = $row;
 				}
 				foreach ($rows1 as $row) {
-					print "<option value='" . $row['Employee_ID'] . "'>" .$row['Employee_ID']. "</option>";
+					print "<option value=" . (int)$row['Employee_ID'] . ">" .$row['Employee_ID']. "</option>";
 				}
 			?>
 			</select>
@@ -163,9 +165,11 @@ objects which the User is the Owner for.
 				while ($row = mysqli_fetch_array($result)) {
 					$rows1[] = $row;
 				}
-				foreach ($rows1 as $row) {
-					print "<option value='" . $row['Read_Access'] . "'>" .$row['Read_Access']. "</option>";
-				}
+				// foreach ($rows1 as $row) {
+				// 	print "<option value='" . $row['Read_Access'] . "'>" .$row['Read_Access']. "</option>";
+				// }
+				print "<option value=0>" . 0 . "</option>";
+				print "<option value=1>" . 1 . "</option>";
 			?>
 			</select>
 			<br><br>
@@ -179,10 +183,9 @@ objects which the User is the Owner for.
 				while ($row = mysqli_fetch_array($result)) {
 					$rows1[] = $row;
 				}
-				foreach ($rows1 as $row) {
-					print "<option value='" . $row['Write_Access'] . "'>" .$row['Write_Access']. "</option>";
-				}
-			?>
+				print "<option value=0>" . 0 . "</option>";
+				print "<option value=1>" . 1 . "</option>";
+		?>
 			</select>
 			<br><br>
 			<button type="submit" name="button1">Add</button>
@@ -210,7 +213,7 @@ objects which the User is the Owner for.
 
 		$n = mysqli_num_rows($result);
 
-		if($n == 1)
+		if(true)
 		{
 
 			$servername = "localhost";
@@ -222,9 +225,16 @@ objects which the User is the Owner for.
 			if ($conn->connect_error) {
 				die("Connection failed: " . $conn->connect_error);
 			}
-			$sql = "UPDATE Access_Matrix SET Read_Access=$Read_Access, Write_Access=$Write_Access 
+			$sql = "SELECT * from Acess_Matrix WHERE Employee_ID=$Emp_id AND Objects_ID='$Obj_id'"; 
+			$result = $conn->query($sql);
+			
+			// print_r($result);
+			if($n == 1)
+				$sql = "UPDATE Access_Matrix SET Read_Access=$Read_Access, Write_Access=$Write_Access 
 			WHERE Employee_ID=$Emp_id AND Objects_ID='$Obj_id'";
-
+			else
+				$sql = "INSERT INTO `access_matrix`(`Employee_ID`, `Objects_ID`, `Read_Access`, `Write_Access`, `Owner`) VALUES ($Emp_id, '$Obj_id', $Read_Access, $Write_Access, 0)";
+			// print_r($sql);
 			$result = $conn->query($sql);
 
 			if ($result) {

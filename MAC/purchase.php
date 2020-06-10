@@ -35,7 +35,7 @@
 					$rows[] = $row;
 				}
 				foreach ($rows as $row) {
-					print "<option value='" . $row['Supplier_ID'] . "'>" .$row['Supplier_ID']."(". $row['Supplier_Name'] . ")</option>";
+					print "<option value=" . $row['Supplier_ID'] . ">" .$row['Supplier_ID']."(". $row['Supplier_Name'] . ")</option>";
 				}
 			?>
 			</select>
@@ -52,7 +52,7 @@
 					$rows1[] = $row;
 				}
 				foreach ($rows1 as $row) {
-					print "<option value='" . $row['Godown_ID'] . "'>" .$row['Godown_ID']."(". $row['Godown_Location'] . ")</option>";
+					print "<option value=" . $row['Godown_ID'] . ">" .$row['Godown_ID']."(". $row['Godown_Location'] . ")</option>";
 					// echo $row['Godown_Location'];
 				}
 			?>
@@ -73,9 +73,8 @@
 			$mysqli = new mysqli($servername, $username, $password, $dbname);
 
 			$purchases = (string)$Gid.'p';
-			$perm_sql = "SELECT Clearance FROM Access_Matrix WHERE Objects_ID=$purchases";
+			$perm_sql = "SELECT Clearance FROM Access_Matrix WHERE Objects_ID='purchases'";
 			$permission = $mysqli->query($perm_sql);
-
 			if($permission->fetch_assoc()["Clearance"] >= $Clearance){
 				echo"
 					<script type='text/javascript'>
@@ -88,6 +87,7 @@
 				</center>";
 
 			}
+			print_r($permission->fetch_assoc());
 
 		?>
 	</div>
