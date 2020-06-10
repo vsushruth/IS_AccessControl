@@ -1,13 +1,13 @@
-##Setup instructions
+## Setup instructions
 
 Development is on Windows 10.
 
-###Requirements:
+### Requirements:
 
 1. XAMPP (version 7.3.1 used for dev) - install from https://www.apachefriends.org/download.html (or from their archives at https://sourceforge.net/projects/xampp/files/).
 2. PHP
 
-###Setup:
+### Setup:
 
 1. Clone the project to `C:\xampp\htdocs` folder.
 2. Open XAMPP Control panel.
