@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 27, 2019 at 08:14 PM
+-- Generation Time: Jun 10, 2020 at 04:32 PM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.1
 
@@ -19,8 +19,31 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `supermarket`
+-- Database: `RBAC`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `access_matrix`
+--
+
+CREATE TABLE `access_matrix` (
+  `Roles` int(11) NOT NULL,
+  `Objects_ID` text NOT NULL,
+  `Read_Access` tinyint(1) NOT NULL,
+  `Write_Access` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `access_matrix`
+--
+
+INSERT INTO `access_matrix` (`Roles`, `Objects_ID`, `Read_Access`, `Write_Access`) VALUES
+(3, 'items', 1, 0),
+(3, 'godowns', 1, 1),
+(3, '1', 1, 1),
+(3, '1p', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -41,7 +64,9 @@ CREATE TABLE `customer` (
 
 INSERT INTO `customer` (`Customer_ID`, `Customer_Name`, `Sales_Exec_ID`, `Contact_Number`) VALUES
 (1, 'Suresh', 2, '9999999995'),
-(2, 'Ram', 1, '1234567890');
+(2, 'Ram', 1, '1234567890'),
+(3, 'Hitesh', 1, '1212121212'),
+(4, 'Ramesh', 1, '7897897899');
 
 -- --------------------------------------------------------
 
@@ -56,16 +81,21 @@ CREATE TABLE `employee` (
   `Home_Number` varchar(10) NOT NULL,
   `Street` varchar(20) NOT NULL,
   `Pincode` int(6) NOT NULL,
-  `Password` text NOT NULL
+  `Password` text NOT NULL,
+  `Clearance` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `employee`
 --
 
-INSERT INTO `employee` (`Employee_ID`, `Employee_Name`, `Supervisor_ID`, `Home_Number`, `Street`, `Pincode`, `Password`) VALUES
-(1, 'Rahul', NULL, 'asd', 'asd', 131, '7b52009b64fd0a2a49e6d8a939753077792b0554'),
-(2, 'K Rahul Reddy', 1, '123', 'Srinivas Nagar, Nitk', 575025, '7b52009b64fd0a2a49e6d8a939753077792b0554');
+INSERT INTO `employee` (`Employee_ID`, `Employee_Name`, `Supervisor_ID`, `Home_Number`, `Street`, `Pincode`, `Password`, `Clearance`) VALUES
+(1, 'Rahul', NULL, 'asd', 'asd', 131, '7c4a8d09ca3762af61e59520943dc26494f8941b', 3),
+(2, 'K Rahul Reddy', 1, '123', 'Srinivas Nagar, Nitk', 575025, '7b52009b64fd0a2a49e6d8a939753077792b0554', 0),
+(3, 'Sush', 2, '12', 'abc', 564789, '7b52009b64fd0a2a49e6d8a939753077792b0554', 0),
+(4, 'abc', 1, '123', 'asd', 123456, '7ab515d12bd2cf431745511ac4ee13fed15ab578', 0),
+(5, 'rahul', 1, '1', '1', 1, '7c4a8d09ca3762af61e59520943dc26494f8941b', 2),
+(6, 'K Rahul Reddy', 1, '12', 'Srinivas Nagar', 575025, '7c4a8d09ca3762af61e59520943dc26494f8941b', 0);
 
 -- --------------------------------------------------------
 
@@ -83,7 +113,12 @@ CREATE TABLE `employee_contacts` (
 --
 
 INSERT INTO `employee_contacts` (`Employee_ID`, `Contact`) VALUES
-(2, '9999999999');
+(1, '9879635456'),
+(1, '9999999994'),
+(2, '9999999999'),
+(4, '9999999994'),
+(5, '9599599595'),
+(6, '9999999994');
 
 -- --------------------------------------------------------
 
@@ -104,7 +139,9 @@ CREATE TABLE `godown` (
 INSERT INTO `godown` (`Godown_ID`, `Godown_Location`, `Manager_ID`) VALUES
 (1, 'Malpe', 2),
 (2, 'Mangalore', 1),
-(14, 'asd', 1);
+(14, 'asd', 1),
+(22, 'gd1', 3),
+(23, 'gd2', 3);
 
 -- --------------------------------------------------------
 
@@ -123,8 +160,15 @@ CREATE TABLE `godown_item_details` (
 --
 
 INSERT INTO `godown_item_details` (`Godown_ID`, `Item_ID`, `Quantity`) VALUES
-(1, 1, 0),
-(1, 2, 7);
+(2, 1, 100),
+(2, 2, 300),
+(2, 3, 80),
+(2, 5, 460),
+(2, 6, 16),
+(2, 10, 100),
+(14, 1, 5),
+(14, 6, 1),
+(23, 11, 300);
 
 -- --------------------------------------------------------
 
@@ -144,12 +188,23 @@ CREATE TABLE `item` (
 --
 
 INSERT INTO `item` (`Item_ID`, `Item_Name`, `Item_Units`, `Item_Unit_Price`) VALUES
-(1, 'Good day', 'piece', 5),
+(1, 'Good day', 'piece', 6),
 (2, 'Good day cashew', 'piece', 10),
-(3, 'Good day golden', 'piece', 15),
+(3, 'Good day golden', 'piece', 12),
 (4, 'Tomato', 'kg', 20),
 (5, 'Potato', 'kg', 15),
-(6, 'Bread', 'Loaf', 30);
+(6, 'Bread', 'Loaf', 30),
+(7, 'Mango', 'kg', 50),
+(8, 'Banana', 'dozen', 35),
+(9, 'Cashew', 'kg', 1000),
+(10, 'Oranges', 'kg', 50),
+(11, 'Apples', 'kg', 100),
+(12, 'asd', 'piece', 15),
+(13, 'M&M', 'piece', 5),
+(14, 'Carrot', 'kg', 10),
+(15, 'Capsicum', 'kg', 50),
+(16, 'Brinjal', 'kg', 20),
+(17, 'Bitter guard', 'kg', 25);
 
 -- --------------------------------------------------------
 
@@ -169,7 +224,12 @@ CREATE TABLE `purchase` (
 --
 
 INSERT INTO `purchase` (`Purchase_ID`, `Supplier_ID`, `Godown_ID`, `DOP`) VALUES
-(19, 1, 1, '1970-01-01');
+(24, 1, 2, '1970-01-01'),
+(25, 3, 2, '1970-01-01'),
+(26, 1, 2, '2019-02-02'),
+(27, 1, 14, '1970-01-01'),
+(28, 4, 14, '1970-01-01'),
+(29, 1, 23, '1970-01-01');
 
 -- --------------------------------------------------------
 
@@ -188,8 +248,15 @@ CREATE TABLE `purchase_item_details` (
 --
 
 INSERT INTO `purchase_item_details` (`Purchase_ID`, `Item_ID`, `Quantity`) VALUES
-(19, 1, 0),
-(19, 2, 20);
+(24, 1, 2000),
+(24, 2, 300),
+(24, 6, 30),
+(24, 10, 100),
+(25, 5, 500),
+(26, 3, 80),
+(27, 6, 15),
+(28, 1, 5),
+(29, 11, 400);
 
 -- --------------------------------------------------------
 
@@ -209,8 +276,10 @@ CREATE TABLE `restock` (
 --
 
 INSERT INTO `restock` (`Restock_ID`, `Godown_ID`, `Showroom_ID`, `DOR`) VALUES
-(7, 1, 1, '1970-01-01'),
-(8, 1, 2, '1970-01-01');
+(13, 2, 1, '1970-01-01'),
+(14, 14, 1, '1970-01-01'),
+(15, 2, 1, '2000-02-02'),
+(16, 23, 5, '1970-01-01');
 
 -- --------------------------------------------------------
 
@@ -229,8 +298,14 @@ CREATE TABLE `restock_item_details` (
 --
 
 INSERT INTO `restock_item_details` (`Restock_ID`, `Item_ID`, `Quantity`) VALUES
-(7, 2, 10),
-(8, 2, 3);
+(13, 1, 1500),
+(13, 5, 20),
+(13, 6, 10),
+(14, 6, 14),
+(15, 1, 400),
+(15, 5, 20),
+(15, 6, 4),
+(16, 11, 100);
 
 -- --------------------------------------------------------
 
@@ -245,6 +320,16 @@ CREATE TABLE `sale` (
   `DOS` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `sale`
+--
+
+INSERT INTO `sale` (`Sale_ID`, `Showroom_ID`, `Customer_ID`, `DOS`) VALUES
+(7, 2, 1, '1970-01-01'),
+(8, 1, 1, '1970-01-01'),
+(9, 5, 4, '1970-01-01'),
+(10, 5, 1, '1970-01-01');
+
 -- --------------------------------------------------------
 
 --
@@ -256,6 +341,16 @@ CREATE TABLE `sale_item_details` (
   `Item_ID` smallint(6) NOT NULL,
   `Quantity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `sale_item_details`
+--
+
+INSERT INTO `sale_item_details` (`Sale_ID`, `Item_ID`, `Quantity`) VALUES
+(8, 1, 20),
+(8, 5, 2),
+(9, 11, 20),
+(10, 11, 3);
 
 -- --------------------------------------------------------
 
@@ -277,7 +372,10 @@ CREATE TABLE `showroom` (
 INSERT INTO `showroom` (`Showroom_ID`, `Showroom_Name`, `Showroom_Location`, `Manager_ID`) VALUES
 (1, 'Showroom 1', 'Surathkal', 2),
 (2, 'Showroom 2', 'Malpe', 2),
-(3, 'Showroom 3', 'Malore', 1);
+(3, 'Showroom 3', 'Malore', 1),
+(4, 'Sh3', 'NITK', 3),
+(5, 'sh4', 'Surat', 2),
+(6, 'asd', 'asdas', 1);
 
 -- --------------------------------------------------------
 
@@ -295,7 +393,11 @@ CREATE TABLE `showroom_employee_details` (
 --
 
 INSERT INTO `showroom_employee_details` (`Showroom_ID`, `Employee_ID`) VALUES
-(1, 2);
+(1, 1),
+(1, 2),
+(1, 3),
+(2, 1),
+(2, 2);
 
 -- --------------------------------------------------------
 
@@ -314,8 +416,10 @@ CREATE TABLE `showroom_item_details` (
 --
 
 INSERT INTO `showroom_item_details` (`Showroom_ID`, `Item_ID`, `Quantity`) VALUES
-(1, 2, 10),
-(2, 2, 3);
+(1, 1, 480),
+(1, 5, 18),
+(1, 6, 10),
+(5, 11, 77);
 
 -- --------------------------------------------------------
 
@@ -335,7 +439,11 @@ CREATE TABLE `supplier` (
 
 INSERT INTO `supplier` (`Supplier_ID`, `Supplier_Name`, `Supplier_Contact`) VALUES
 (1, 'Ramesh', '9999998887'),
-(3, 'asd', '1321654123');
+(3, 'asd', '1321654123'),
+(4, 'Supplier 1', '1234567891'),
+(5, 'Supplier 2', '9494949494'),
+(6, 's', '12'),
+(7, 'Sup 3', '12');
 
 --
 -- Indexes for dumped tables
@@ -461,55 +569,55 @@ ALTER TABLE `supplier`
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `Customer_ID` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `Customer_ID` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `employee`
 --
 ALTER TABLE `employee`
-  MODIFY `Employee_ID` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `Employee_ID` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `godown`
 --
 ALTER TABLE `godown`
-  MODIFY `Godown_ID` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `Godown_ID` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `item`
 --
 ALTER TABLE `item`
-  MODIFY `Item_ID` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `Item_ID` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `purchase`
 --
 ALTER TABLE `purchase`
-  MODIFY `Purchase_ID` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `Purchase_ID` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `restock`
 --
 ALTER TABLE `restock`
-  MODIFY `Restock_ID` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `Restock_ID` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `sale`
 --
 ALTER TABLE `sale`
-  MODIFY `Sale_ID` smallint(6) NOT NULL AUTO_INCREMENT;
+  MODIFY `Sale_ID` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `showroom`
 --
 ALTER TABLE `showroom`
-  MODIFY `Showroom_ID` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `Showroom_ID` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `supplier`
 --
 ALTER TABLE `supplier`
-  MODIFY `Supplier_ID` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `Supplier_ID` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Constraints for dumped tables
