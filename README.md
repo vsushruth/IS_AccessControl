@@ -27,4 +27,4 @@ Development is on Windows 10.
 7. Visit http://localhost/IS_AccessControl/DAC/ to access DAC implementation. Other implementations are available at respective extensions.
 8. Sign in using {Eid: 1, Password:132456} or {Eid: 5, Password:132456}.
 
-If you have any queries, please reach out to me at [](mailto:) or Rahul at [k_rahul_reddy@outlook.com](mailto:k_rahul_reddy@outlook.com).
+If you have any queries, please reach out to me at [vsushruth.171co148@nitk.edu.in](mailto:vsushruth.171co148@nitk.edu.in) or Rahul at [k_rahul_reddy@outlook.com](mailto:k_rahul_reddy@outlook.com).
