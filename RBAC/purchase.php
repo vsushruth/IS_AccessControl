@@ -73,7 +73,7 @@
 			$mysqli = new mysqli($servername, $username, $password, $dbname);
 
 			$purchases = (string)$Gid.'p';
-			$perm_sql = "SELECT Write_Access FROM Access_Matrix WHERE Roles=$Role AND Objects_ID=$purchases";
+			$perm_sql = "SELECT Write_Access FROM Access_Matrix WHERE Roles=$Role AND Objects_ID='purchases'";
 			$permission = $mysqli->query($perm_sql);
 
 			if($permission == false){

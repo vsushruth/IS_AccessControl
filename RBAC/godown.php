@@ -61,10 +61,11 @@ $sql = "SELECT * FROM purchase natural join purchase_item_details natural join g
 $result = $conn->query($sql);
 
 $purchase_id = (string)$Gid.'p';
-$perm_sql = "SELECT Read_Access FROM Access_Matrix WHERE Roles=$Role AND Objects_ID=$purchase_id";
+$perm_sql = "SELECT Read_Access FROM Access_Matrix WHERE Roles=$Role AND Objects_ID='$purchase_id'";
+// print_r($perm_sql);
 $permission = $conn->query($perm_sql);
 
-if($permission->fetch_assoc()["Read_Access"]){
+if($permission){
     if ($result->num_rows > 0) {
         echo "<table class = 'table table-hover table-striped'><tr><th>Date</th><th>Item ID</th><th>Item Name</th><th>Supplier ID</th><th>Supplier Name</th><th>Quantity</th><th>Price per unit</th><th>Total price</th></tr>";
 
