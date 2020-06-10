@@ -46,12 +46,14 @@
 			</tr>";
 		
 			while($row = $result->fetch_assoc()) {
-				echo "<tr>
-					<td>Level ".$row["Roles"]." Employee</td>
-					<td>".$row["Objects_ID"]."</td>
-					<td>".$row["Read_Access"]."</td>
-					<td>".$row["Write_Access"]."</td>
-				</tr>";
+				if($row["Roles"] == $Role){
+					echo "<tr>
+						<td>Level ".$row["Roles"]." Employee</td>
+						<td>".$row["Objects_ID"]."</td>
+						<td>".$row["Read_Access"]."</td>
+						<td>".$row["Write_Access"]."</td>
+					</tr>";
+				}
 			}
 			echo "</table>";
 
